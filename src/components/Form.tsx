@@ -49,7 +49,7 @@ export default function Form() {
                     setNewTask(e.target.value);
                 }} 
             />
-            <button className='w-44 flex justify-center bg-violet-500 p-2 rounded-lg transition-all text-white hover:bg-violet-600 hover:tracking-wider'>
+            <button className='w-44 flex justify-center shadow-md bg-violet-500 p-2 rounded-lg transition-all text-white hover:bg-violet-600 hover:tracking-wider'>
                 {isLoading
                     ? <Loader2 className='animate-spin' />
                     : "Add Task"

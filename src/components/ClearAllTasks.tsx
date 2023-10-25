@@ -10,7 +10,7 @@ export default function ClearAllTasks({ onClick }:Props) {
 
     return(
         <button 
-            className="block mx-auto my-4 bg-red-500 px-4 py-2 text-white rounded-full transition-all hover:bg-red-600 hover:tracking-wider" 
+            className="block mx-auto my-4 shadow-md bg-red-500 px-4 py-2 text-white rounded-full transition-all hover:bg-red-600 hover:tracking-wider" 
             onClick={async () => {
                 setIsLoading(true);
                 await onClick();
