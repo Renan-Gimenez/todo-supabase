@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/Skeleton'
 import Form from "../components/Form";
 import Task from "../components/Task";
 import ClearAllTasks from "@/components/ClearAllTasks";
+import Header from "@/components/Header";
 
 export default function Home() {
   const [isStarting, setIsStarting] = useState(true);
@@ -83,8 +84,9 @@ export default function Home() {
   return (
     <main className="flex min-h-screen dark:bg-gray-950 flex-col items-center justify-start px-6 py-24">
       <div className="max-w-md">
-        <h1>Todo list</h1>
-        
+        {/* <h1 className="dark:text-white">Todo list</h1> */}
+        <Header />
+
         <Form />
         
         {isStarting &&
