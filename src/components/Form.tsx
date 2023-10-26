@@ -43,8 +43,8 @@ export default function Form() {
             <input 
                 type="text" 
                 value={newTask}
-                placeholder='Wash the dishes'
-                className='w-full text-black p-2 rounded-lg shadow-md'
+                placeholder='Type a task...'
+                className='w-full bg-gray-800 text-white p-2 rounded-lg shadow-md'
                 onChange={(e) => {
                     setNewTask(e.target.value);
                 }} 
