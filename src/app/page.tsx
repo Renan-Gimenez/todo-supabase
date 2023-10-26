@@ -99,7 +99,7 @@ export default function Home() {
         }
 
         {!isLoadingTasks && !tasks.length && 
-          <div className="w-full flex flex-col items-center gap-2 my-8">
+          <div className="w-full flex flex-col items-center gap-2 my-8 text-white">
             <FileCheck className="h-16 w-auto" /> 
             <span className="font-bold">There are no Tasks</span>
           </div>
