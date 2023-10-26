@@ -17,6 +17,7 @@ import Header from "@/components/Header";
 export default function Home() {
   const [isStarting, setIsStarting] = useState(true);
   const [isLoadingTasks, setIsLoadingTasks] = useState(true);
+  const [taskInProcess, setTaskInProcess] = useState<number | null>(null);
   const [tasks, setTasks] = useState<TTask[]>([]);
   const toast = useToast();
 
@@ -32,16 +33,21 @@ export default function Home() {
     .subscribe()
 
   const doRemoveTask = async (id:number) => {
-    await removeTaskById(id);
-    getTasksEffect();
-
-    toast({
-      title: 'Task deleted!',
-      position: 'top',
-      status: 'success',
-      duration: 2000,
-      isClosable: true,
-    })
+    try {
+      setTaskInProcess(id);
+      await removeTaskById(id);
+      getTasksEffect();
+  
+      toast({
+        title: 'Task deleted!',
+        position: 'top',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const doRemoveAllTasks = async () => {
@@ -102,7 +108,7 @@ export default function Home() {
         <div className="flex flex-col gap-2">
           {tasks.map((item:TTask, index) => {
             return(
-              <Task key={index} title={item.task} onClick={() => doRemoveTask(item.id)} />
+              <Task key={index} title={item.task} inProcess={taskInProcess === item.id} onClick={() => doRemoveTask(item.id)} />
             );
           })}
         </div>
