@@ -44,7 +44,7 @@ export default function Form() {
                 setNewTask('');
             }}
         >
-            <div className='w-full flex items-center gap-1 bg-gray-800 text-white rounded-lg shadow-md px-3 py-2 focus-within:ring focus-within:ring-violet-500'>
+            <div className='w-full flex items-center gap-1 dark:bg-gray-800 dark:text-white rounded-lg shadow-md px-3 py-2 focus-within:ring focus-within:ring-violet-500'>
                 <input 
                     type="text" 
                     value={newTask}
