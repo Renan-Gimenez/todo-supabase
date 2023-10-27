@@ -12,6 +12,10 @@ export default function Form() {
 
     const toast = useToast();
 
+    const maxLength = 200;
+    const currentLength = newTask.length;
+    const progress = `${currentLength} / ${maxLength}`;
+
     return(
         <form
             action=""
@@ -40,15 +44,25 @@ export default function Form() {
                 setNewTask('');
             }}
         >
-            <input 
-                type="text" 
-                value={newTask}
-                placeholder='Type a task...'
-                className='w-full bg-gray-800 text-white p-2 rounded-lg shadow-md'
-                onChange={(e) => {
-                    setNewTask(e.target.value);
-                }} 
-            />
+            <div className='w-full flex items-center gap-1 bg-gray-800 text-white rounded-lg shadow-md px-3 py-2 focus-within:ring focus-within:ring-violet-500'>
+                <input 
+                    type="text" 
+                    value={newTask}
+                    placeholder='Type a task...'
+                    className='w-full bg-transparent text-ellipsis outline-none'
+                    onChange={(e) => {
+                        const length = e.target.value.length;
+
+                        if (length <= maxLength) {
+                            setNewTask(e.target.value);
+                        } else {
+                            setNewTask(e.target.value.slice(0, maxLength));
+                        }
+                    }} 
+                />
+                <span className='text-zinc-500 text-[10px] w-auto self-end whitespace-nowrap'>{progress}</span>
+            </div>
+
             <button className='w-44 flex justify-center shadow-md bg-violet-500 p-2 rounded-lg transition-all text-white hover:bg-violet-600 hover:tracking-wider'>
                 {isLoading
                     ? <Loader2 className='animate-spin' />
