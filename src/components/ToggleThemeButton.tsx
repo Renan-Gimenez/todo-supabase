@@ -3,7 +3,7 @@ import { Moon, Sun } from "lucide-react";
 import { useContext } from "react";
 
 export default function ToggleThemeButton() {
-    const { theme, toggleTheme } = useContext(ThemeContext);
+    const { theme, toggleTheme }:any = useContext(ThemeContext);
 
     return(
         <button className="border border-violet-500/20 p-1 rounded-xl dark:text-white" onClick={toggleTheme}>
