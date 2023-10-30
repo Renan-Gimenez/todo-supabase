@@ -9,7 +9,9 @@ interface ThemeContextType {
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }:any) {
-    const themeInLocalStorage = localStorage.getItem('theme');
+    const inBrowser = typeof window !== "undefined";
+
+    const themeInLocalStorage = inBrowser ? localStorage.getItem('theme') : null;
     const deviceTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
     const [theme, setTheme] = useState(themeInLocalStorage || deviceTheme);
