@@ -88,7 +88,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen dark:bg-gray-900 flex-col items-center justify-start px-6 py-24">
+    <main className="flex min-h-screen bg-bg-primary flex-col items-center justify-start px-6 py-24">
       <div className="max-w-md">
         <Header />
 
