@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -6,8 +6,8 @@ import { getTasks, removeTaskById, supabase } from "@/services/taskService";
 
 import { FileCheck } from "lucide-react";
 
-import { useToast } from '@chakra-ui/react'
-import { Skeleton } from '@/components/Skeleton'
+import { useToast } from "@chakra-ui/react";
+import { Skeleton } from "@/components/Skeleton";
 
 import Form from "../components/Form";
 import Task from "../components/Task";
@@ -21,49 +21,53 @@ export default function Home() {
   const [tasks, setTasks] = useState<TTask[]>([]);
   const toast = useToast();
 
-  const subscribeTasks = supabase.channel('custom-all-channel')
+  const subscribeTasks = supabase
+    .channel("custom-all-channel")
     .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'tasks' },
-      (payload:any) => {
+      "postgres_changes",
+      { event: "*", schema: "public", table: "tasks" },
+      (payload: any) => {
         getTasksEffect();
-        console.log('Change received!', payload)
+        console.log("Change received!", payload);
       }
     )
-    .subscribe()
+    .subscribe();
 
-  const doRemoveTask = async (id:number) => {
+  const doRemoveTask = async (id: number) => {
     try {
       setTaskInProcess(id);
       await removeTaskById(id);
       getTasksEffect();
-  
+
       toast({
-        title: 'Task deleted!',
-        position: 'top',
-        status: 'success',
+        title: "Task deleted!",
+        position: "top",
+        status: "success",
         duration: 2000,
         isClosable: true,
-      })
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const doRemoveAllTasks = async () => {
-    const { data, error } = await supabase.from("tasks").delete().not("task", "eq", "");
+    const { data, error } = await supabase
+      .from("tasks")
+      .delete()
+      .not("task", "eq", "");
 
     if (data) console.log(data);
     if (error) console.log(error);
-    
+
     toast({
       title: error ? "Error" : "All tasks deleted!",
-      position: 'top',
-      status: error ? 'error' : "success",
+      position: "top",
+      status: error ? "error" : "success",
       duration: 2000,
       isClosable: true,
-    })
-  }
+    });
+  };
 
   async function getTasksEffect() {
     setIsLoadingTasks(true);
@@ -75,12 +79,10 @@ export default function Home() {
   const renderButton = () => {
     if (!tasks.length) {
       return null;
-    } 
+    }
 
-    return (
-      <ClearAllTasks onClick={() => doRemoveAllTasks()} />
-    )
-  }
+    return <ClearAllTasks onClick={() => doRemoveAllTasks()} />;
+  };
 
   useEffect(() => {
     getTasksEffect();
@@ -93,29 +95,33 @@ export default function Home() {
         <Header />
 
         <Form />
-        
-        {isStarting &&
-          <Skeleton />
-        }
 
-        {!isLoadingTasks && !tasks.length && 
+        {isStarting && <Skeleton />}
+
+        {!isLoadingTasks && !tasks.length && (
           <div className="w-full flex flex-col items-center gap-2 my-8 text-white">
-            <FileCheck className="h-16 w-auto" /> 
-            <span className="font-bold">There are no Tasks</span>
+            <FileCheck className="h-16 w-auto text-zinc-800 dark:text-white" />
+            <span className="font-bold text-zinc-800 dark:text-white">
+              There are no Tasks
+            </span>
           </div>
-        } 
+        )}
 
         <div className="flex flex-col gap-2">
-          {tasks.map((item:TTask, index) => {
-            return(
-              <Task key={index} title={item.task} inProcess={taskInProcess === item.id} onClick={() => doRemoveTask(item.id)} />
+          {tasks.map((item: TTask, index) => {
+            return (
+              <Task
+                key={index}
+                title={item.task}
+                inProcess={taskInProcess === item.id}
+                onClick={() => doRemoveTask(item.id)}
+              />
             );
           })}
         </div>
 
         {renderButton()}
-
       </div>
     </main>
-  )
+  );
 }
