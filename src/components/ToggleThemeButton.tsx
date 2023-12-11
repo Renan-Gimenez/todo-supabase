@@ -17,9 +17,9 @@ export default function ToggleThemeButton() {
     >
       {isClient ? (
         theme === "dark" ? (
-          <Sun />
-        ) : (
           <Moon />
+        ) : (
+          <Sun />
         )
       ) : (
         <Loader2 className="animate-spin" />
