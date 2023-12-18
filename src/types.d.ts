@@ -1,4 +1,5 @@
 type TTask = {
-    id: number,
-    task: string,
-}
+  id: number;
+  done: boolean;
+  task: string;
+};

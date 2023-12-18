@@ -29,3 +29,8 @@ export async function removeTaskById(id: number) {
   const data = await supabase.from("tasks").delete().eq("id", id);
   console.log("REMOVE TASK BY ID:\n", data);
 }
+
+export async function toggleTaskDone(id: number, done: boolean) {
+  const data = await supabase.from("tasks").update({ done: done }).eq("id", id);
+  console.log("TOGGLE TASK DONE:\n", data);
+}

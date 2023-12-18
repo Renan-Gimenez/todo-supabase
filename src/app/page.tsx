@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import { getTasks, removeTaskById, supabase } from "@/services/taskService";
+import {
+  getTasks,
+  removeTaskById,
+  toggleTaskDone,
+  supabase,
+} from "@/services/taskService";
 
 import { FileCheck } from "lucide-react";
 
@@ -37,7 +42,6 @@ export default function Home() {
     try {
       setTaskInProcess(id);
       await removeTaskById(id);
-      getTasksEffect();
 
       toast({
         title: "Task deleted!",
@@ -46,6 +50,14 @@ export default function Home() {
         duration: 2000,
         isClosable: true,
       });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const doToggleTaskDone = async (id: number, done: boolean) => {
+    try {
+      await toggleTaskDone(id, done);
     } catch (error) {
       console.log(error);
     }
@@ -112,9 +124,12 @@ export default function Home() {
             return (
               <Task
                 key={index}
+                id={item.id}
+                done={item.done}
                 title={item.task}
                 inProcess={taskInProcess === item.id}
-                onClick={() => doRemoveTask(item.id)}
+                removeTask={() => doRemoveTask(item.id)}
+                toggleTaskDone={doToggleTaskDone}
               />
             );
           })}
