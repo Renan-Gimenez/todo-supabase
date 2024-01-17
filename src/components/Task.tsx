@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 
 interface Props {
   id: number;
+  uid: string;
   done: boolean;
   title: string;
   inProcess: boolean;

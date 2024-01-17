@@ -125,6 +125,7 @@ export default function Home() {
               <Task
                 key={index}
                 id={item.id}
+                uid={item.uid}
                 done={item.done}
                 title={item.task}
                 inProcess={taskInProcess === item.id}
