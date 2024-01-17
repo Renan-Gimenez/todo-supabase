@@ -33,7 +33,9 @@ export default function Form() {
         }
 
         setIsLoading(true);
-        await supabase.from("tasks").insert({ task: `${newTask}` });
+        await supabase
+          .from("tasks")
+          .insert({ task: `${newTask}`, uid: `${user?.id}` });
         setIsLoading(false);
 
         toast({
