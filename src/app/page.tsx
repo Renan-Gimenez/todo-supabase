@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  getTasks,
+import useGetTasks, {
   removeTaskById,
   toggleTaskDone,
   supabase,
@@ -20,11 +19,12 @@ import ClearAllTasks from "@/components/ClearAllTasks";
 import Header from "@/components/Header";
 
 export default function Home() {
+  const { tasks, getTasks } = useGetTasks();
+  const toast = useToast();
+
   const [isStarting, setIsStarting] = useState(true);
   const [isLoadingTasks, setIsLoadingTasks] = useState(true);
   const [taskInProcess, setTaskInProcess] = useState<number | null>(null);
-  const [tasks, setTasks] = useState<TTask[]>([]);
-  const toast = useToast();
 
   const subscribeTasks = supabase
     .channel("custom-all-channel")
@@ -82,10 +82,22 @@ export default function Home() {
   };
 
   async function getTasksEffect() {
-    setIsLoadingTasks(true);
-    const data = await getTasks();
-    setIsLoadingTasks(false);
-    setTasks(data);
+    try {
+      setIsLoadingTasks(true);
+
+      const user = supabase.auth.getUser();
+      const userId = (await user).data.user?.id;
+
+      if (userId) {
+        await getTasks(userId);
+      } else {
+        console.log("UNDEFINED USER");
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setIsLoadingTasks(false);
+    }
   }
 
   const renderButton = () => {

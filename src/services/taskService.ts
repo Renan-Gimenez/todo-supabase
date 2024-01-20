@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -10,20 +11,29 @@ export async function addTask(item: TTask) {
   console.log(data);
 }
 
-export async function getTasks(): Promise<TTask[]> {
-  const data = await supabase
-    .from("tasks")
-    .select("*")
-    .order("created_at", { ascending: true });
+const useGetTasks = () => {
+  const [tasks, setTasks] = useState<TTask[]>([]);
 
-  console.log("TASKS:\n", data);
+  async function getTasks(userId: string) {
+    const data = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("uid", userId)
+      .order("created_at", { ascending: true });
 
-  if (!data.data) {
-    return [];
+    console.log("TASKS:\n", data);
+    if (!data.data) {
+      return;
+    }
+
+    setTasks(data.data);
   }
 
-  return data.data;
-}
+  return {
+    tasks,
+    getTasks,
+  };
+};
 
 export async function removeTaskById(id: number) {
   const data = await supabase.from("tasks").delete().eq("id", id);
@@ -34,3 +44,5 @@ export async function toggleTaskDone(id: number, done: boolean) {
   const data = await supabase.from("tasks").update({ done: done }).eq("id", id);
   console.log("TOGGLE TASK DONE:\n", data);
 }
+
+export default useGetTasks;
