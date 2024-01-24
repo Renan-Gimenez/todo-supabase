@@ -8,7 +8,7 @@ import useGetTasks, {
   supabase,
 } from "@/services/taskService";
 
-import { FileCheck } from "lucide-react";
+import { FileCheck, Loader } from "lucide-react";
 
 import { useToast } from "@chakra-ui/react";
 import { Skeleton } from "@/components/Skeleton";
@@ -17,9 +17,11 @@ import Form from "../components/Form";
 import Task from "../components/Task";
 import ClearAllTasks from "@/components/ClearAllTasks";
 import Header from "@/components/Header";
+import useAuth from "@/services/useAuth";
 
 export default function Home() {
   const { tasks, getTasks } = useGetTasks();
+  const { loading, signOut } = useAuth();
   const toast = useToast();
 
   const [isStarting, setIsStarting] = useState(true);
@@ -113,6 +115,14 @@ export default function Home() {
     setIsStarting(false);
   }, []);
 
+  if (loading) {
+    return (
+      <main className="h-screen w-screen flex items-center justify-center">
+        <Loader className="animate-spin" />
+      </main>
+    );
+  }
+
   return (
     <main className="flex min-h-screen bg-bg-primary flex-col items-center justify-start px-6 py-24">
       <div className="max-w-md">
@@ -121,6 +131,8 @@ export default function Home() {
         <Form />
 
         {isStarting && <Skeleton />}
+
+        {/* <button onClick={signOut}>SignOut</button> */}
 
         {!isLoadingTasks && !tasks.length && (
           <div className="w-full flex flex-col items-center gap-2 my-8 text-white">
