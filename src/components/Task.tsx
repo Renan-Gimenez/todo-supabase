@@ -1,6 +1,5 @@
-import * as CheckBox from "@radix-ui/react-checkbox";
-
-import { Check, Trash2, Loader2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
+import CheckBox from "./CheckBox";
 
 interface Props {
   id: number;
@@ -23,16 +22,13 @@ export default function Task({
   return (
     <div className="w-full flex items-center justify-between gap-3 p-3 rounded-lg shadow-lg dark:bg-gray-700">
       <div className="h-full flex mt-1 self-start">
-        <CheckBox.Root
-          className="h-5 w-5 bg-zinc-200 dark:bg-gray-800 rounded"
-          checked={done}
-          onClick={() => toggleTaskDone(id, !done)}
-        >
-          <CheckBox.Indicator className="flex items-center justify-center dark:text-zinc-50">
-            <Check className="h-4 w-4" />
-          </CheckBox.Indicator>
-        </CheckBox.Root>
+        <CheckBox
+          id={id}
+          done={done}
+          toggleTaskDone={() => toggleTaskDone(id, !done)}
+        />
       </div>
+
       <span
         className={`h-full w-full ${
           done ? "text-zinc-500 line-through" : "dark:text-zinc-50"
@@ -40,6 +36,7 @@ export default function Task({
       >
         {title}
       </span>
+
       <button
         className="self-start p-1.5 rounded-full transition-all hover:bg-gray-800/30 dark:hover:bg-gray-800/70"
         onClick={removeTask}
